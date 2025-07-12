@@ -1,4 +1,4 @@
-# TREX - The Regex Engine
+# TREX - Terminal Regex Engine
 ## Requirements
 Installing ***trex*** required CMAKE Version 3.31 or above and a C++ 23 compiler.
 ## Installation Guide
