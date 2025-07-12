@@ -8,7 +8,7 @@ std::ostream& operator<< (std::ostream& output, TokenType type) {
     case CONCAT: output << "CONCAT"; break;
     case STAR: output << "STAR"; break;
     case PLUS: output << "PLUS"; break;
-    case OPTIONAL: output << "OPTIONAL"; break;
+    case OPT: output << "OPT"; break;
     case DOT: output << "DOT"; break;
     case LPAREN: output << "LPAREN"; break;
     case RPAREN: output << "RPAREN"; break;

@@ -15,7 +15,7 @@ Token Lexer::next () {
         case '|': return Token(UNION);
         case '+': return Token(PLUS);
         case '*': return Token(STAR);
-        case '?': return Token(OPTIONAL);
+        case '?': return Token(OPT);
         case '.': return Token(DOT);
         case '(': return Token(LPAREN);
         case ')': return Token(RPAREN);
@@ -37,7 +37,7 @@ std::vector<Token> tokenize(const std::string& pattern)  {
         curr = token.type;
 
         bool curr_can_be = (curr == CHAR or curr == LPAREN);
-        bool prev_can_be = (prev == CHAR or prev == RPAREN or prev == PLUS or prev == OPTIONAL or prev == STAR);
+        bool prev_can_be = (prev == CHAR or prev == RPAREN or prev == PLUS or prev == OPT or prev == STAR);
         if (curr_can_be and prev_can_be)
             tokens.emplace_back(CONCAT);
 
