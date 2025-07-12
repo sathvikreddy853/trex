@@ -5,32 +5,47 @@ bool Lexer::has_next() const {
 }
 
 Token Lexer::next () {
+    using enum TokenType;
     if (not has_next())  {
-        return Token(TokenType::END, '\0');
+        return Token(END, '\0');
     }
 
     char value = pattern[pos++];
     switch(value) {
-        case '|': return Token(TokenType::UNION, '|');
-        case '+': return Token(TokenType::PLUS, '+');
-        case '*': return Token(TokenType::STAR, '*');
-        case '?': return Token(TokenType::OPTIONAL, '?');
-        case '.': return Token(TokenType::DOT, '.');
-        case '(': return Token(TokenType::LPAREN, '(');
-        case ')': return Token(TokenType::RPAREN, ')');
-        default: return Token(TokenType::CHAR, value);
+        case '|': return Token(UNION);
+        case '+': return Token(PLUS);
+        case '*': return Token(STAR);
+        case '?': return Token(OPTIONAL);
+        case '.': return Token(DOT);
+        case '(': return Token(LPAREN);
+        case ')': return Token(RPAREN);
+        default: return Token(CHAR, value);
     }
 }
 
 std::vector<Token> tokenize(const std::string& pattern)  {
+    using enum TokenType;
+
     Lexer lexer(pattern);
     std::vector<Token> tokens;
 
+    TokenType prev = NONE;
+    TokenType curr = NONE;
+
     while (lexer.has_next()) {
-        tokens.push_back(lexer.next());
+        Token token = lexer.next();
+        curr = token.type;
+
+        bool curr_can_be = (curr == CHAR or curr == LPAREN);
+        bool prev_can_be = (prev == CHAR or prev == RPAREN or prev == PLUS or prev == OPTIONAL or prev == STAR);
+        if (curr_can_be and prev_can_be)
+            tokens.emplace_back(CONCAT);
+
+        tokens.push_back(token);
+        prev = token.type;
     }
     
-    tokens.emplace_back(TokenType::END);
+    tokens.emplace_back(END, '\0');
 
     return tokens;
 }

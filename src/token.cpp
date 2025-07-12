@@ -1,17 +1,18 @@
 #include <token.hpp>
 
 std::ostream& operator<< (std::ostream& output, TokenType type) {
+    using enum TokenType;
     switch (type) {
-    case TokenType::CHAR: output << "CHAR"; break;
-    case TokenType::UNION: output << "UNION"; break;
-    case TokenType::CONCAT: output << "CONCAT"; break;
-    case TokenType::STAR: output << "STAR"; break;
-    case TokenType::PLUS: output << "PLUS"; break;
-    case TokenType::OPTIONAL: output << "OPTIONAL"; break;
-    case TokenType::DOT: output << "DOT"; break;
-    case TokenType::LPAREN: output << "LPAREN"; break;
-    case TokenType::RPAREN: output << "RPAREN"; break;
-    case TokenType::END: output << "END"; break;
+    case CHAR: output << "CHAR"; break;
+    case UNION: output << "UNION"; break;
+    case CONCAT: output << "CONCAT"; break;
+    case STAR: output << "STAR"; break;
+    case PLUS: output << "PLUS"; break;
+    case OPTIONAL: output << "OPTIONAL"; break;
+    case DOT: output << "DOT"; break;
+    case LPAREN: output << "LPAREN"; break;
+    case RPAREN: output << "RPAREN"; break;
+    case END: output << "END"; break;
     default: output << "NONE"; break;
     }
 
@@ -19,6 +20,9 @@ std::ostream& operator<< (std::ostream& output, TokenType type) {
 }
 
 std::ostream& operator<< (std::ostream& output, Token token) {
-    output << '<' << token.type << ':' << token.value << '>';
+    output << CYAN << token.type << RESET;
+    if (token.value != '\0')
+        output << '(' << GREEN << token.value << RESET << ')';
+
     return output;
 }

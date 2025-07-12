@@ -23,5 +23,8 @@ build/
 *.out
 *.zip
 
+# ignore formatting files
+.clang-format
+
 # ignore files generated from compiling LATEX code
-docs
+docs/*
