@@ -11,6 +11,8 @@
 #include <algorithm>
 #include <numeric>
 #include <utility>
+#include <variant>
+#include <optional>
 
 /* containers */
 #include <map>

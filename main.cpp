@@ -1,6 +1,11 @@
 #include <macros.hpp>
+#include <lexer.hpp>
 
 int main () {
-    std::cout << "Hello, World!" << std::endl;
+    auto tokens = tokenize("a(b|c)*d");
+    for (auto token : tokens)
+        std::cout << token << ' ';
+    std::cout << std::endl;
+
     return 0;
 }

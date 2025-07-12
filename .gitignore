@@ -24,5 +24,4 @@ build/
 *.zip
 
 # ignore files generated from compiling LATEX code
-docs/*
-!docs/*.pdf
+docs
