@@ -58,6 +58,8 @@ std::shared_ptr<ASTNode> Parser::parse_factor () {
 std::shared_ptr<ASTNode> Parser::parse_base () {
     if (match(TokenType::CHAR)) {
         return std::make_shared<ASTNode>(NodeType::CHAR, tokens[pos - 1].value.value());
+    } else if (match(TokenType::DOT)) {
+        return std::make_shared<ASTNode>(NodeType::DOT);
     } else if (match(TokenType::LPAREN)) {
         auto node = parse_expression();
         match(TokenType::RPAREN);
