@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <memory>
 #include <numeric>
+#include <functional>
 #include <optional>
 #include <utility>
 #include <variant>

@@ -6,28 +6,9 @@ int main () {
     auto tokens = tokenize ("a(b|c)*d");
     for (auto token : tokens)
         std::cout << token << ' ';
-    std::cout << std::endl;
+    std::cout << std::endl << std::endl;
 
-    Parser parser (tokens);
-    std::shared_ptr<ASTNode> node = parser.parse ();
-
-    std::queue<std::shared_ptr<ASTNode>> nodes;
-    nodes.push (node);
-    while (not nodes.empty ()) {
-        auto u = nodes.front ();
-        nodes.pop ();
-
-        std::cout << u->type;
-        if (u->value.has_value())
-            std::cout << '(' << u->value.value() <<  ')';
-        std::cout << std::endl;
-
-        if (u->left)
-            nodes.push (u->left);
-        if (u->right)
-            nodes.push (u->right);
-    }
-
-
+    std::shared_ptr<ASTNode> node = parse(tokens);
+    std::cout << node << std::endl;
     return 0;
 }

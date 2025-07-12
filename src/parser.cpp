@@ -18,8 +18,9 @@ bool Parser::match (TokenType type) {
     return true;
 }
 
-std::shared_ptr<ASTNode> Parser::parse () {
-    auto node = parse_expression ();
+std::shared_ptr<ASTNode> parse (const std::vector<Token> &tokens) {
+    Parser parser(tokens);
+    auto node = parser.parse_expression ();
     return node;
 }
 
@@ -64,7 +65,7 @@ std::shared_ptr<ASTNode> Parser::parse_base () {
         auto node = parse_expression();
         match(TokenType::RPAREN);
         return node;
-    } 
+    }
 
     return nullptr;
 }

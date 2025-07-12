@@ -20,20 +20,20 @@ class Parser {
     : tokens (tokens), pos (0) {
     }
 
-    std::shared_ptr<ASTNode> parse ();
-
-    private:
-    const std::vector<Token>& tokens;
-    u32 pos;
-
     Token peek () const;
     void advance ();
     bool match (TokenType type);
-
+    
     std::shared_ptr<ASTNode> parse_expression ();
     std::shared_ptr<ASTNode> parse_term ();
     std::shared_ptr<ASTNode> parse_factor ();
     std::shared_ptr<ASTNode> parse_base ();
+
+    private:
+    const std::vector<Token>& tokens;
+    u32 pos;
 };
+
+std::shared_ptr<ASTNode> parse (const std::vector<Token>& tokens);
 
 #endif // PARSER_HPP

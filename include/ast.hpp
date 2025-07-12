@@ -21,5 +21,6 @@ struct ASTNode {
 };
 
 std::ostream& operator<< (std::ostream& output, NodeType type);
+std::ostream& operator<< (std::ostream& output, const std::shared_ptr<ASTNode>& node);
 
 #endif // AST_HPP
