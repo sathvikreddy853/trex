@@ -7,9 +7,12 @@ enum struct TokenType { CHAR, UNION, CONCAT, STAR, PLUS, OPTIONAL, DOT, RPAREN, 
 
 struct Token {
     TokenType type;
-    char value;
+    std::optional<char> value;
 
-    Token (TokenType type = TokenType::NONE, char value = '\0') : type (type), value (value) {
+    Token (TokenType type = TokenType::NONE) : type (type), value(std::nullopt) {
+    }
+
+    Token (TokenType type, char value) : type (type), value (value) {
     }
 
     friend std::ostream& operator<< (std::ostream&, Token);

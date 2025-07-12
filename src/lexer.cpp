@@ -7,7 +7,7 @@ bool Lexer::has_next() const {
 Token Lexer::next () {
     using enum TokenType;
     if (not has_next())  {
-        return Token(END, '\0');
+        return Token(END);
     }
 
     char value = pattern[pos++];

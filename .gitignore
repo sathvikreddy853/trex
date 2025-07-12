@@ -2,7 +2,7 @@
 *
 !*.*
 !*/
-!Makefile
+Makefile
 
 # ignores vscode workspace config folders
 .vscode/

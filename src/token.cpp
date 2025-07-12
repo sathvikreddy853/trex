@@ -21,8 +21,8 @@ std::ostream& operator<< (std::ostream& output, TokenType type) {
 
 std::ostream& operator<< (std::ostream& output, Token token) {
     output << CYAN << token.type << RESET;
-    if (token.value != '\0')
-        output << '(' << GREEN << token.value << RESET << ')';
+    if (token.value.has_value())
+        output << '(' << GREEN << token.value.value() << RESET << ')';
 
     return output;
 }
