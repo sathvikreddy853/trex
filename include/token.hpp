@@ -1,5 +1,5 @@
-#ifndef TOKEN_HPP
-#define TOKEN_HPP
+#ifndef TREX_TOKEN
+#define TREX_TOKEN
 
 #include <macros.hpp>
 
@@ -21,4 +21,4 @@ struct Token {
 std::ostream& operator<< (std::ostream& output, TokenType type);
 std::ostream& operator<< (std::ostream& output, Token token);
 
-#endif
+#endif // TREX_TOKEN

@@ -1,5 +1,5 @@
-#ifndef MACROS_HPP
-#define MACROS_HPP
+#ifndef TREX_MACROS
+#define TREX_MACROS
 
 /* io libraries */
 #include <fstream>
@@ -47,4 +47,4 @@ typedef int64_t i64;
 
 #define LOG(x) std::cout << x << std::endl;
 
-#endif // MACROS_HPP
+#endif // TREX_MACROS

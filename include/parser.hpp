@@ -1,5 +1,5 @@
-#ifndef PARSER_HPP
-#define PARSER_HPP
+#ifndef TREX_PARSER
+#define TREX_PARSER
 
 #include <ast.hpp>
 #include <macros.hpp>
@@ -36,4 +36,4 @@ class Parser {
 
 std::shared_ptr<ASTNode> parse (const std::vector<Token>& tokens);
 
-#endif // PARSER_HPP
+#endif // TREX_PARSER

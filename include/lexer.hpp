@@ -1,5 +1,5 @@
-#ifndef LEXER_HPP
-#define LEXER_HPP
+#ifndef TREX_LEXER
+#define TREX_LEXER
 
 #include <macros.hpp>
 #include <token.hpp>
@@ -11,7 +11,6 @@ class Lexer {
 
     Token next () ;
     bool has_next() const;
-    Token get_escape_token();
 
     private:
     std::string pattern;
@@ -20,4 +19,4 @@ class Lexer {
 
 std::vector<Token> tokenize(const std::string& pattern);
 
-#endif // LEXER_HPP
+#endif // TREX_LEXER

@@ -1,5 +1,5 @@
-#ifndef AST_HPP
-#define AST_HPP
+#ifndef TREX_AST
+#define TREX_AST
 
 #include <macros.hpp>
 
@@ -23,4 +23,4 @@ struct ASTNode {
 std::ostream& operator<< (std::ostream& output, NodeType type);
 std::ostream& operator<< (std::ostream& output, const std::shared_ptr<ASTNode>& node);
 
-#endif // AST_HPP
+#endif // TREX_AST
