@@ -36,12 +36,12 @@ std::ostream& operator<< (std::ostream& output, const std::shared_ptr<ASTNode>& 
         bool has_right = static_cast<bool> (root->right);
 
         if (has_left and not has_right) {
-            print_tree (root->left, prefix + (is_left ? "│   " : "    "), false, false);
+            print_tree (root->left, prefix + (not is_root ? (is_left ? "│   " : "    ") : ""), false, false);
         } else if (has_left) {
-            print_tree (root->left, prefix + (is_left ? "│   " : "    "), true, false);
-            print_tree (root->right, prefix + (is_left ? "│   " : "    "), false, false);
+            print_tree (root->left, prefix + (not is_root ? (is_left ? "│   " : "    ") : ""), true, false);
+            print_tree (root->right, prefix + (not is_root ? (is_left ? "│   " : "    ") : ""), false, false);
         } else if (has_right) {
-            print_tree (root->right, prefix + (is_left ? "│   " : "    "), false, false);
+            print_tree (root->right, prefix + (not is_root ? (is_left ? "│   " : "    ") : ""), false, false);
         }
     };
 

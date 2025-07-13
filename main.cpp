@@ -3,7 +3,7 @@
 #include <parser.hpp>
 
 int main () {
-    auto tokens = tokenize ("a(b|c)*d");
+    auto tokens = tokenize ("((ab)*|(ac)*d)?");
     for (auto token : tokens)
         std::cout << token << ' ';
     std::cout << std::endl << std::endl;

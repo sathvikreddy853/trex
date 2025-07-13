@@ -6,13 +6,13 @@ NFA NFA::build_nfa (const std::shared_ptr<ASTNode>& node) {
     using enum NodeType;
     switch (node->type) {
     case CHAR: return build_char (node->value.value ()); break;
-    case CONCAT: return build_concat(node->left, node->right);
-    case UNION:  return build_union(node->left, node->right);
-    case STAR:   return build_star(node->left);
-    case PLUS:   return build_plus(node->left);
-    case OPT:    return build_opt(node->left);
-    case DOT:    return build_dot();
-    default: throw std::runtime_error("Invalid AST NodeType in build_nfa()"); break;
+    case CONCAT: return build_concat (node->left, node->right);
+    case UNION: return build_union (node->left, node->right);
+    case STAR: return build_star (node->left);
+    case PLUS: return build_plus (node->left);
+    case OPT: return build_opt (node->left);
+    case DOT: return build_dot ();
+    default: throw std::runtime_error ("error: invalid ast node for building nfa"); break;
     }
 }
 
