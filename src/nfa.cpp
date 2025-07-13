@@ -100,7 +100,7 @@ NFA NFA::build_plus (const NFA& alice) {
     return carol;
 }
 
-std::set<u32> NFA::epsilon_closure (std::set<u32> states) {
+std::set<u32> NFA::epsilon_closure (std::set<u32> states) const {
     std::stack<u32> stack;
     std::set<u32> closure = states;
 
@@ -111,7 +111,10 @@ std::set<u32> NFA::epsilon_closure (std::set<u32> states) {
         u32 state = stack.top ();
         stack.pop ();
 
-        for (auto& [to, type, value] : transitions[state]) {
+        if (not transitions.contains(state))
+            continue;
+
+        for (auto& [to, type, value] : transitions.at(state)) {
             if (type == Transition::Type::EPSILON and closure.insert (to).second)
                 stack.push (to);
         }
@@ -120,12 +123,15 @@ std::set<u32> NFA::epsilon_closure (std::set<u32> states) {
     return closure;
 }
 
-std::set<u32> NFA::move (std::set<u32> states, std::optional<char> req_value) {
+std::set<u32> NFA::move (std::set<u32> states, std::optional<char> req_value) const {
     std::set<u32> result;
 
     for (u32 state : states) {
-        for (auto& [to, type, value] : transitions[state]) {
-            if (type == Transition::Type::DOT or (type == Transition::Type::CHAR and value.value() == req_value.value())) {
+        if (not transitions.contains(state))
+            continue;
+
+        for (auto& [to, type, value] : transitions.at(state)) {
+            if ((type == Transition::Type::DOT) or (type == Transition::Type::CHAR and value.value() == req_value.value())) {
                 result.insert(to);
             }
         }

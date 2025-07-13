@@ -8,10 +8,11 @@
 #include <print>
 
 #include <algorithm>
+#include <cassert>
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <numeric>
-#include <functional>
 #include <optional>
 #include <utility>
 #include <variant>
@@ -19,8 +20,8 @@
 /* containers */
 #include <deque>
 #include <map>
-#include <set>
 #include <queue>
+#include <set>
 #include <stack>
 #include <unordered_map>
 #include <unordered_set>

@@ -6,6 +6,7 @@ bool Lexer::has_next() const {
 
 Token Lexer::next () {
     using enum Token::Type;
+
     if (not has_next())  {
         return Token(END);
     }
@@ -36,8 +37,8 @@ std::vector<Token> Lexer::tokenize(const std::string& pattern)  {
         Token token = lexer.next();
         curr = token.type;
 
-        bool curr_can_be = (curr == CHAR or curr == LPAREN);
-        bool prev_can_be = (prev == CHAR or prev == RPAREN or prev == PLUS or prev == OPT or prev == STAR);
+        bool curr_can_be = (curr == CHAR or curr == LPAREN or curr == DOT);
+        bool prev_can_be = (prev == CHAR or prev == RPAREN or prev == PLUS or prev == OPT or prev == STAR or prev == DOT);
         if (curr_can_be and prev_can_be)
             tokens.emplace_back(CONCAT);
 
@@ -45,7 +46,7 @@ std::vector<Token> Lexer::tokenize(const std::string& pattern)  {
         prev = token.type;
     }
     
-    tokens.emplace_back(END, '\0');
+    tokens.emplace_back(END);
 
     return tokens;
 }

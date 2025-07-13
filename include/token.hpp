@@ -12,11 +12,9 @@ struct Token {
 
     Token (Type type = Type::NONE) : type (type), value(std::nullopt) {
     }
-
+    
     Token (Type type, char value) : type (type), value (value) {
     }
-
-    friend std::ostream& operator<< (std::ostream&, Token);
 };
 
 std::ostream& operator<< (std::ostream& output, Token::Type type);
