@@ -9,15 +9,6 @@ DFA DFA::construct (const NFA& alice) {
     std::queue<std::set<u32>> queue;
     queue.push (start_state);
 
-    std::set<char> alphabet;
-    for (const auto& [from, transitions] : alice.transitions) {
-        for (const auto& [to, type, value] : transitions) {
-            if (type == NFA::Transition::Type::CHAR and value.has_value()) {
-                alphabet.insert(value.value());
-            }
-        }
-    }
-
     while (not queue.empty ()) {
         std::set<u32> current = queue.front ();
         queue.pop ();
@@ -35,7 +26,7 @@ DFA DFA::construct (const NFA& alice) {
             }
 
             u32 target = state_hash[next];
-            david.transitions[curr_id].emplace_back(target, DFA::Transition::Type::CHAR, c);
+            david.transitions.emplace(std::pair{curr_id, c}, target);
         }
     }
 
@@ -52,26 +43,12 @@ bool DFA::match (const std::string& input) const {
     u32 current = start;
 
     for (char c : input) {
-        bool transitioned = false;
-        if (not transitions.contains (current))
+        if (not transitions.contains({current, c})) {
             return false;
-
-        for (const auto& [to, type, value] : transitions.at (current)) {
-            if (type == Transition::Type::CHAR && value == c) {
-                current      = to;
-                transitioned = true;
-                break;
-            } else if (type == Transition::Type::DOT) {
-                current      = to;
-                transitioned = true;
-                break;
-            }
-        }
-
-        if (not transitioned) {
-            return false;
+        } else {
+            current = transitions.at({current, c});
         }
     }
 
-    return accept_states.count (current) > 0;
+    return accept_states.contains (current);
 }

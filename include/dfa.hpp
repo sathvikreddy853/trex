@@ -5,36 +5,29 @@
 #include <nfa.hpp>
 
 struct DFA {
-    struct Transition {
-        enum struct Type { CHAR, DOT };
+    static inline u32 get_id () {
+        static u32 id = 0;
+        id            = id % (std::numeric_limits<u32>::max () - 1);
+        return id++;
+    }
 
-        u32 to;
-        Type type;
-        std::optional<char> value;
-
-        Transition (u32 to, Type type, std::optional<char> val = std::nullopt)
-        : to (to), type (type), value (val) {
+    struct PairHash {
+        std::size_t operator() (const std::pair<u32, char>& p) const {
+            return std::hash<u32> () (p.first) ^ (std::hash<char> () (p.second) << 1);
         }
     };
 
-    static inline u32 get_id () {
-        static u32 id = 0;
-        id = id % (std::numeric_limits<u32>::max() - 1);
-        return id++;
-    }
-    
-
     u32 start;
     std::unordered_set<u32> accept_states;
-    std::unordered_map<u32, std::vector<Transition>> transitions;
+    std::unordered_map<std::pair<u32, char>, u32, PairHash> transitions;
 
     DFA () = default;
 
     DFA (u32 start) : start (start) {
     }
 
-    static DFA construct(const NFA& alice);
-    bool match(const std::string& input) const;
+    static DFA construct (const NFA& alice);
+    bool match (const std::string& input) const;
 };
 
 #endif // TREX_DFA

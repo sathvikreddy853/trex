@@ -5,13 +5,16 @@
 #include <dfa.hpp>
 
 int main () {
-    std::string text = "bcbca";
-    auto tokens = Lexer::tokenize ("a?(bc)+a");
+    std::string text = "abcbad";
+    auto tokens = Lexer::tokenize ("a+(b|c)*a+.*");
+
+    std::println("Abstract Syntax Tree:");
     std::shared_ptr<ASTNode> node = Parser::parse(tokens);
     std::cout << node << std::endl;
 
     NFA nfa = NFA::build(node);
     DFA dfa = DFA::construct(nfa);
-    std::cout << std::boolalpha << dfa.match(text) << std::endl;
+    std::println("Match: {}", dfa.match(text));
+
     return 0;
 }
