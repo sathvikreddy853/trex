@@ -18,8 +18,8 @@ bool Parser::match (TokenType type) {
     return true;
 }
 
-std::shared_ptr<ASTNode> parse (const std::vector<Token> &tokens) {
-    Parser parser(tokens);
+std::shared_ptr<ASTNode> parse (const std::vector<Token>& tokens) {
+    Parser parser (tokens);
     auto node = parser.parse_expression ();
     return node;
 }
@@ -47,9 +47,18 @@ std::shared_ptr<ASTNode> Parser::parse_term () {
 std::shared_ptr<ASTNode> Parser::parse_factor () {
     auto root = parse_base ();
     switch (peek ().type) {
-    case TokenType::STAR: advance (); root = std::make_shared<ASTNode>(NodeType::STAR, root); break;
-    case TokenType::PLUS: advance (); root = std::make_shared<ASTNode>(NodeType::PLUS, root); break;
-    case TokenType::OPT: advance (); root = std::make_shared<ASTNode>(NodeType::OPT, root); break;
+    case TokenType::STAR:
+        advance ();
+        root = std::make_shared<ASTNode> (NodeType::STAR, root);
+        break;
+    case TokenType::OPT:
+        advance ();
+        root = std::make_shared<ASTNode> (NodeType::OPT, root);
+        break;
+    case TokenType::PLUS:
+        advance ();
+        root = std::make_shared<ASTNode> (NodeType::PLUS, root);
+        break;
     default: break;
     }
 
@@ -57,13 +66,13 @@ std::shared_ptr<ASTNode> Parser::parse_factor () {
 }
 
 std::shared_ptr<ASTNode> Parser::parse_base () {
-    if (match(TokenType::CHAR)) {
-        return std::make_shared<ASTNode>(NodeType::CHAR, tokens[pos - 1].value.value());
-    } else if (match(TokenType::DOT)) {
-        return std::make_shared<ASTNode>(NodeType::DOT);
-    } else if (match(TokenType::LPAREN)) {
-        auto node = parse_expression();
-        match(TokenType::RPAREN);
+    if (match (TokenType::CHAR)) {
+        return std::make_shared<ASTNode> (NodeType::CHAR, tokens[pos - 1].value.value ());
+    } else if (match (TokenType::DOT)) {
+        return std::make_shared<ASTNode> (NodeType::DOT);
+    } else if (match (TokenType::LPAREN)) {
+        auto node = parse_expression ();
+        match (TokenType::RPAREN);
         return node;
     }
 

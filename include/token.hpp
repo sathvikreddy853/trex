@@ -3,7 +3,7 @@
 
 #include <macros.hpp>
 
-enum struct TokenType { CHAR, UNION, CONCAT, STAR, PLUS, OPT, DOT, RPAREN, LPAREN, END, NONE };
+enum struct TokenType { CHAR, DOT, UNION, CONCAT, STAR, OPT, PLUS, RPAREN, LPAREN, END, NONE };
 
 struct Token {
     TokenType type;
