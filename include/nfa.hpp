@@ -44,7 +44,7 @@ struct NFA {
     static NFA build_plus (const NFA&);
 
     std::set<u32> epsilon_closure(std::set<u32> states) const;
-    std::set<u32> move (std::set<u32> states, std::optional<char> req_value = std::nullopt) const;
+    std::set<u32> move (std::set<u32> states, char symbol) const;
 };
 
 std::ostream& operator<< (std::ostream& output, NFA::Transition::Type type);

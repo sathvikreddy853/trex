@@ -123,7 +123,7 @@ std::set<u32> NFA::epsilon_closure (std::set<u32> states) const {
     return closure;
 }
 
-std::set<u32> NFA::move (std::set<u32> states, std::optional<char> req_value) const {
+std::set<u32> NFA::move (std::set<u32> states, char symbol) const {
     std::set<u32> result;
 
     for (u32 state : states) {
@@ -131,7 +131,9 @@ std::set<u32> NFA::move (std::set<u32> states, std::optional<char> req_value) co
             continue;
 
         for (auto& [to, type, value] : transitions.at(state)) {
-            if ((type == Transition::Type::DOT) or (type == Transition::Type::CHAR and value.value() == req_value.value())) {
+            if (type == Transition::Type::CHAR and value.value() == symbol) {
+                result.insert(to);
+            } else if (type == Transition::Type::DOT) {
                 result.insert(to);
             }
         }

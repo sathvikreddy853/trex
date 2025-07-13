@@ -5,8 +5,8 @@
 #include <dfa.hpp>
 
 int main () {
-    std::string text = "abcbca";
-    auto tokens = Lexer::tokenize ("a(bc)*a");
+    std::string text = "bcbca";
+    auto tokens = Lexer::tokenize ("a?(bc)+a");
     std::shared_ptr<ASTNode> node = Parser::parse(tokens);
     std::cout << node << std::endl;
 

@@ -9,28 +9,23 @@ DFA DFA::construct (const NFA& alice) {
     std::queue<std::set<u32>> queue;
     queue.push (start_state);
 
+    std::set<char> alphabet;
+    for (const auto& [from, transitions] : alice.transitions) {
+        for (const auto& [to, type, value] : transitions) {
+            if (type == NFA::Transition::Type::CHAR and value.has_value()) {
+                alphabet.insert(value.value());
+            }
+        }
+    }
+
     while (not queue.empty ()) {
         std::set<u32> current = queue.front ();
         queue.pop ();
-
         u32 curr_id = state_hash[current];
-        std::set<char> alphabet;
 
-        for (u32 state : current) {
-            if (not alice.transitions.contains (state))
-                continue;
-
-            for (const auto& [to, type, value] : alice.transitions.at (state)) {
-                if (type == NFA::Transition::Type::CHAR) {
-                    alphabet.insert (value.value ());
-                } else if (type == NFA::Transition::Type::DOT) {
-                    alphabet.insert ('.');
-                }
-            }
-        }
-
-        for (char c : alphabet) {
+        for (char c = 32; c < 127; c++) {
             std::set<u32> next = alice.epsilon_closure (alice.move (current, c));
+
             if (next.empty ())
                 continue;
 
@@ -40,10 +35,7 @@ DFA DFA::construct (const NFA& alice) {
             }
 
             u32 target = state_hash[next];
-
-            Transition::Type type = (c == '.') ? Transition::Type::DOT : Transition::Type::CHAR;
-            david.transitions[curr_id].emplace_back (
-            target, type, (type == Transition::Type::CHAR ? std::optional<char> (c) : std::nullopt));
+            david.transitions[curr_id].emplace_back(target, DFA::Transition::Type::CHAR, c);
         }
     }
 
@@ -65,13 +57,11 @@ bool DFA::match (const std::string& input) const {
             return false;
 
         for (const auto& [to, type, value] : transitions.at (current)) {
-            if (type == Transition::Type::DOT) {
+            if (type == Transition::Type::CHAR && value == c) {
                 current      = to;
                 transitioned = true;
                 break;
-            }
-            
-            if (type == Transition::Type::CHAR && value == c) {
+            } else if (type == Transition::Type::DOT) {
                 current      = to;
                 transitioned = true;
                 break;
