@@ -3,22 +3,23 @@
 
 #include <macros.hpp>
 
-enum struct TokenType { CHAR, DOT, UNION, CONCAT, STAR, OPT, PLUS, RPAREN, LPAREN, END, NONE };
 
 struct Token {
-    TokenType type;
+    enum struct Type { CHAR, DOT, UNION, CONCAT, STAR, OPT, PLUS, RPAREN, LPAREN, END, NONE };
+
+    Type type;
     std::optional<char> value;
 
-    Token (TokenType type = TokenType::NONE) : type (type), value(std::nullopt) {
+    Token (Type type = Type::NONE) : type (type), value(std::nullopt) {
     }
 
-    Token (TokenType type, char value) : type (type), value (value) {
+    Token (Type type, char value) : type (type), value (value) {
     }
 
     friend std::ostream& operator<< (std::ostream&, Token);
 };
 
-std::ostream& operator<< (std::ostream& output, TokenType type);
+std::ostream& operator<< (std::ostream& output, Token::Type type);
 std::ostream& operator<< (std::ostream& output, Token token);
 
 #endif // TREX_TOKEN

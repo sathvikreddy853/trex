@@ -1,7 +1,7 @@
 #include <token.hpp>
 
-std::ostream& operator<< (std::ostream& output, TokenType type) {
-    using enum TokenType;
+std::ostream& operator<< (std::ostream& output, Token::Type type) {
+    using enum Token::Type;
     switch (type) {
     case CHAR: output << "CHAR"; break;
     case DOT: output << "DOT"; break;

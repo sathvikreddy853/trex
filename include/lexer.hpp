@@ -11,12 +11,13 @@ class Lexer {
 
     Token next () ;
     bool has_next() const;
+    
+    static std::vector<Token> tokenize(const std::string& pattern);
 
     private:
     std::string pattern;
     u32 pos;
 };
 
-std::vector<Token> tokenize(const std::string& pattern);
 
 #endif // TREX_LEXER

@@ -1,7 +1,7 @@
 #include <ast.hpp>
 
-std::ostream& operator<< (std::ostream& output, NodeType type) {
-    using enum NodeType;
+std::ostream& operator<< (std::ostream& output, ASTNode::Type type) {
+    using enum ASTNode::Type;
     switch (type) {
     case CHAR: output << "CHAR"; break;
     case DOT: output << "DOT"; break;
@@ -17,7 +17,7 @@ std::ostream& operator<< (std::ostream& output, NodeType type) {
 }
 
 std::ostream& operator<< (std::ostream& output, const std::shared_ptr<ASTNode>& node) {
-    using enum NodeType;
+    using enum ASTNode::Type;
     std::function<void (std::shared_ptr<ASTNode>, std::string, bool, bool)> print_tree;
     print_tree = [&] (std::shared_ptr<ASTNode> root, std::string prefix, bool is_left, bool is_root) {
         if (!root)

@@ -4,33 +4,33 @@
 #include <ast.hpp>
 #include <macros.hpp>
 
-enum struct TransitionType { CHAR, EPSILON, DOT, NONE };
-
-struct Transition {
-    u32 to;
-    TransitionType type;
-    std::optional<char> value;
-
-    Transition (u32 to, TransitionType type, std::optional<char> val = std::nullopt)
-    : to (to), type (type), value (val) {
-    }
-};
-
 struct NFA {
+    struct Transition {
+        enum struct Type { CHAR, EPSILON, DOT };
+
+        u32 to;
+        Type type;
+        std::optional<char> value;
+
+        Transition (u32 to, Type type, std::optional<char> value = std::nullopt)
+        : to (to), type (type), value (value) {
+        }
+    };
+
     u32 start;
     u32 accept;
     std::unordered_map<u32, std::vector<Transition>> transitions;
 
     static inline u32 get_id () {
         static u32 id = 0;
+        id = id % (std::numeric_limits<u32>::max() - 1);
         return id++;
     }
 
-    NFA (u32 start, u32 accept)
-    : start (start), accept (accept) {
+    NFA (u32 start, u32 accept) : start (start), accept (accept) {
     }
 
-    NFA (u32 start, u32 accept, TransitionType type, std::optional<char> value = std::nullopt)
+    NFA (u32 start, u32 accept, Transition::Type type, std::optional<char> value = std::nullopt)
     : start (start), accept (accept) {
         transitions[start].emplace_back (accept, type, value);
     }
@@ -42,8 +42,11 @@ struct NFA {
     static NFA build_star (const NFA&);
     static NFA build_opt (const NFA&);
     static NFA build_plus (const NFA&);
+
+    std::set<u32> epsilon_closure(std::set<u32> states);
+    std::set<u32> move (std::set<u32> states, std::optional<char> req_value = std::nullopt);
 };
 
-std::ostream& operator<< (std::ostream& output, TransitionType type);
+std::ostream& operator<< (std::ostream& output, NFA::Transition::Type type);
 
 #endif // TREX_NFA

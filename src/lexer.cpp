@@ -5,7 +5,7 @@ bool Lexer::has_next() const {
 }
 
 Token Lexer::next () {
-    using enum TokenType;
+    using enum Token::Type;
     if (not has_next())  {
         return Token(END);
     }
@@ -23,14 +23,14 @@ Token Lexer::next () {
     }
 }
 
-std::vector<Token> tokenize(const std::string& pattern)  {
-    using enum TokenType;
+std::vector<Token> Lexer::tokenize(const std::string& pattern)  {
+    using enum Token::Type;
 
     Lexer lexer(pattern);
     std::vector<Token> tokens;
 
-    TokenType prev = NONE;
-    TokenType curr = NONE;
+    Token::Type prev = NONE;
+    Token::Type curr = NONE;
 
     while (lexer.has_next()) {
         Token token = lexer.next();

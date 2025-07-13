@@ -9,7 +9,7 @@ void Parser::advance () {
 }
 
 /* moves ahead only if it matches */
-bool Parser::match (TokenType type) {
+bool Parser::match (Token::Type type) {
     if (peek ().type != type) {
         return false;
     }
@@ -18,7 +18,7 @@ bool Parser::match (TokenType type) {
     return true;
 }
 
-std::shared_ptr<ASTNode> parse (const std::vector<Token>& tokens) {
+std::shared_ptr<ASTNode> Parser::parse (const std::vector<Token>& tokens) {
     Parser parser (tokens);
     auto node = parser.parse_expression ();
     return node;
@@ -26,9 +26,9 @@ std::shared_ptr<ASTNode> parse (const std::vector<Token>& tokens) {
 
 std::shared_ptr<ASTNode> Parser::parse_expression () {
     auto root = parse_term ();
-    while (match (TokenType::UNION)) {
+    while (match (Token::Type::UNION)) {
         auto right = parse_term ();
-        root       = std::make_shared<ASTNode> (NodeType::UNION, root, right);
+        root       = std::make_shared<ASTNode> (ASTNode::Type::UNION, root, right);
     }
 
     return root;
@@ -36,9 +36,9 @@ std::shared_ptr<ASTNode> Parser::parse_expression () {
 
 std::shared_ptr<ASTNode> Parser::parse_term () {
     auto root = parse_factor ();
-    while (match (TokenType::CONCAT)) {
+    while (match (Token::Type::CONCAT)) {
         auto right = parse_factor ();
-        root       = std::make_shared<ASTNode> (NodeType::CONCAT, root, right);
+        root       = std::make_shared<ASTNode> (ASTNode::Type::CONCAT, root, right);
     }
 
     return root;
@@ -47,17 +47,17 @@ std::shared_ptr<ASTNode> Parser::parse_term () {
 std::shared_ptr<ASTNode> Parser::parse_factor () {
     auto root = parse_base ();
     switch (peek ().type) {
-    case TokenType::STAR:
+    case Token::Type::STAR:
         advance ();
-        root = std::make_shared<ASTNode> (NodeType::STAR, root);
+        root = std::make_shared<ASTNode> (ASTNode::Type::STAR, root);
         break;
-    case TokenType::OPT:
+    case Token::Type::OPT:
         advance ();
-        root = std::make_shared<ASTNode> (NodeType::OPT, root);
+        root = std::make_shared<ASTNode> (ASTNode::Type::OPT, root);
         break;
-    case TokenType::PLUS:
+    case Token::Type::PLUS:
         advance ();
-        root = std::make_shared<ASTNode> (NodeType::PLUS, root);
+        root = std::make_shared<ASTNode> (ASTNode::Type::PLUS, root);
         break;
     default: break;
     }
@@ -66,13 +66,13 @@ std::shared_ptr<ASTNode> Parser::parse_factor () {
 }
 
 std::shared_ptr<ASTNode> Parser::parse_base () {
-    if (match (TokenType::CHAR)) {
-        return std::make_shared<ASTNode> (NodeType::CHAR, tokens[pos - 1].value.value ());
-    } else if (match (TokenType::DOT)) {
-        return std::make_shared<ASTNode> (NodeType::DOT);
-    } else if (match (TokenType::LPAREN)) {
+    if (match (Token::Type::CHAR)) {
+        return std::make_shared<ASTNode> (ASTNode::Type::CHAR, tokens[pos - 1].value.value ());
+    } else if (match (Token::Type::DOT)) {
+        return std::make_shared<ASTNode> (ASTNode::Type::DOT);
+    } else if (match (Token::Type::LPAREN)) {
         auto node = parse_expression ();
-        match (TokenType::RPAREN);
+        match (Token::Type::RPAREN);
         return node;
     }
 
