@@ -1,39 +1,49 @@
 #ifndef TREX_NFA
 #define TREX_NFA
 
-#include <macros.hpp>
 #include <ast.hpp>
+#include <macros.hpp>
 
 enum struct TransitionType { CHAR, EPSILON, DOT, NONE };
 
-struct State {
-    int id;
+struct Transition {
+    u32 to;
     TransitionType type;
     std::optional<char> value;
 
-    State* out1 = nullptr;
-    State* out2 = nullptr;
-
-    State(TransitionType type) : id(next_id++), type(type), value(std::nullopt) {}
-    State(TransitionType type, char value) : id(next_id++), type(type), value(value) {}
-    
-    static int next_id;
+    Transition (u32 to, TransitionType type, std::optional<char> val = std::nullopt)
+    : to (to), type (type), value (val) {
+    }
 };
 
 struct NFA {
-    State* start;
-    State* accept;
+    u32 start;
+    u32 accept;
+    std::unordered_map<u32, std::vector<Transition>> transitions;
 
-    static NFA build_nfa(const std::shared_ptr<ASTNode>& node);
-    static NFA build_char(char value);
-    static NFA build_dot();
-    static NFA build_union(const std::shared_ptr<ASTNode>& left, const std::shared_ptr<ASTNode>& right);
-    static NFA build_concat(const std::shared_ptr<ASTNode>& left, const std::shared_ptr<ASTNode>& right);
-    static NFA build_star(const std::shared_ptr<ASTNode>& child);
-    static NFA build_opt(const std::shared_ptr<ASTNode>& child);
-    static NFA build_plus(const std::shared_ptr<ASTNode>& child);
+    static inline u32 get_id () {
+        static u32 id = 0;
+        return id++;
+    }
 
-    NFA(State* start, State* accept) : start(start), accept(accept) {}
+    NFA (u32 start, u32 accept)
+    : start (start), accept (accept) {
+    }
+
+    NFA (u32 start, u32 accept, TransitionType type, std::optional<char> value = std::nullopt)
+    : start (start), accept (accept) {
+        transitions[start].emplace_back (accept, type, value);
+    }
+
+    static NFA build (const std::shared_ptr<ASTNode>& node);
+
+    static NFA build_union (const NFA&, const NFA&);
+    static NFA build_concat (const NFA&, const NFA&);
+    static NFA build_star (const NFA&);
+    static NFA build_opt (const NFA&);
+    static NFA build_plus (const NFA&);
 };
+
+std::ostream& operator<< (std::ostream& output, TransitionType type);
 
 #endif // TREX_NFA

@@ -1,6 +1,7 @@
 #include <lexer.hpp>
 #include <macros.hpp>
 #include <parser.hpp>
+#include <nfa.hpp>
 
 int main () {
     auto tokens = tokenize ("((ab)*|(ac)*d)?");
@@ -10,5 +11,7 @@ int main () {
 
     std::shared_ptr<ASTNode> node = parse(tokens);
     std::cout << node << std::endl;
+
+    NFA nfa = NFA::build(node);
     return 0;
 }
