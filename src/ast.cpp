@@ -1,5 +1,7 @@
 #include <ast.hpp>
 
+namespace TREX {
+
 std::ostream& operator<< (std::ostream& output, ASTNode::Type type) {
     using enum ASTNode::Type;
     switch (type) {
@@ -48,3 +50,5 @@ std::ostream& operator<< (std::ostream& output, const std::shared_ptr<ASTNode>& 
     print_tree (node, "", false, true);
     return output;
 }
+    
+} // namespace TREX

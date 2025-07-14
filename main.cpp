@@ -1,20 +1,20 @@
+#include <dfa.hpp>
 #include <lexer.hpp>
 #include <macros.hpp>
-#include <parser.hpp>
 #include <nfa.hpp>
-#include <dfa.hpp>
+#include <parser.hpp>
 
 int main () {
-    std::string text = "abbcda";
-    auto tokens = Lexer::tokenize ("a.*a");
+    auto text   = "abbcda";
+    auto tokens = TREX::Lexer::tokenize ("a.*a");
 
-    std::println("Abstract Syntax Tree:");
-    std::shared_ptr<ASTNode> node = Parser::parse(tokens);
+    std::println ("Abstract Syntax Tree:");
+    std::shared_ptr<ASTNode> node = TREX::Parser::parse (tokens);
     std::cout << node << std::endl;
 
-    NFA nfa = NFA::build(node);
-    DFA dfa = DFA::construct(nfa);
-    std::println("Match: {}", dfa.match(text));
+    TREX::NFA nfa = TREX::NFA::build (node);
+    TREX::DFA dfa = TREX::DFA::construct (nfa);
+    std::println ("Match: {}", dfa.match (text));
 
     return 0;
 }

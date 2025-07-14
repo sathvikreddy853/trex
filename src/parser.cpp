@@ -1,5 +1,7 @@
 #include <parser.hpp>
 
+namespace TREX {
+
 Token Parser::peek () const {
     return tokens[pos];
 }
@@ -78,3 +80,5 @@ std::shared_ptr<ASTNode> Parser::parse_base () {
 
     return nullptr;
 }
+
+} // namespace TREX

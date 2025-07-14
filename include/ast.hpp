@@ -3,6 +3,7 @@
 
 #include <macros.hpp>
 
+namespace TREX {
 
 struct ASTNode {
     enum struct Type { CHAR, UNION, CONCAT, STAR, PLUS, OPT, DOT };
@@ -23,5 +24,7 @@ struct ASTNode {
 
 std::ostream& operator<< (std::ostream& output, ASTNode::Type type);
 std::ostream& operator<< (std::ostream& output, const std::shared_ptr<ASTNode>& node);
+
+} // namespace TREX
 
 #endif // TREX_AST

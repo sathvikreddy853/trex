@@ -1,5 +1,7 @@
 #include <nfa.hpp>
 
+namespace TREX {
+
 std::ostream& operator<< (std::ostream& output, NFA::Transition::Type type) {
     using enum NFA::Transition::Type;
     switch (type) {
@@ -27,8 +29,8 @@ NFA NFA::build (const std::shared_ptr<ASTNode>& node) {
 }
 
 NFA NFA::build_union (const NFA& alice, const NFA& bob) {
-    u32 start  = get_id ();
-    u32 accept = get_id ();
+    uint32_t start  = get_id ();
+    uint32_t accept = get_id ();
 
     NFA carol (start, accept);
     carol.transitions = alice.transitions;
@@ -59,8 +61,8 @@ NFA NFA::build_concat (const NFA& alice, const NFA& bob) {
 }
 
 NFA NFA::build_star (const NFA& alice) {
-    u32 start  = get_id ();
-    u32 accept = get_id ();
+    uint32_t start  = get_id ();
+    uint32_t accept = get_id ();
 
     NFA carol (start, accept);
     carol.transitions = alice.transitions;
@@ -75,8 +77,8 @@ NFA NFA::build_star (const NFA& alice) {
 }
 
 NFA NFA::build_opt (const NFA& alice) {
-    u32 start  = get_id ();
-    u32 accept = get_id ();
+    uint32_t start  = get_id ();
+    uint32_t accept = get_id ();
 
     NFA carol (start, accept);
     carol.transitions = alice.transitions;
@@ -89,7 +91,7 @@ NFA NFA::build_opt (const NFA& alice) {
 }
 
 NFA NFA::build_plus (const NFA& alice) {
-    u32 accept = get_id ();
+    uint32_t accept = get_id ();
 
     NFA carol (alice.start, accept);
     carol.transitions = alice.transitions;
@@ -100,15 +102,15 @@ NFA NFA::build_plus (const NFA& alice) {
     return carol;
 }
 
-std::set<u32> NFA::epsilon_closure (std::set<u32> states) const {
-    std::stack<u32> stack;
-    std::set<u32> closure = states;
+std::set<uint32_t> NFA::epsilon_closure (std::set<uint32_t> states) const {
+    std::stack<uint32_t> stack;
+    std::set<uint32_t> closure = states;
 
-    for (u32 state : states)
+    for (uint32_t state : states)
         stack.push (state);
 
     while (not stack.empty ()) {
-        u32 state = stack.top ();
+        uint32_t state = stack.top ();
         stack.pop ();
 
         if (not transitions.contains (state))
@@ -123,15 +125,15 @@ std::set<u32> NFA::epsilon_closure (std::set<u32> states) const {
     return closure;
 }
 
-std::set<u32> NFA::move (std::set<u32> states, std::optional<char> symbol) const {
-    std::set<u32> result;
+std::set<uint32_t> NFA::move (std::set<uint32_t> states, std::optional<char> symbol) const {
+    std::set<uint32_t> result;
 
-    for (u32 state : states) {
+    for (uint32_t state : states) {
         if (not transitions.contains (state))
             continue;
 
         for (auto& [to, type, value] : transitions.at (state)) {
-            if (type == Transition::Type::CHAR and symbol.has_value () and value == symbol.value()) {
+            if (type == Transition::Type::CHAR and symbol.has_value () and value == symbol.value ()) {
                 result.insert (to);
             } else if (type == Transition::Type::DOT) {
                 result.insert (to);
@@ -141,3 +143,5 @@ std::set<u32> NFA::move (std::set<u32> states, std::optional<char> symbol) const
 
     return result;
 }
+
+} // namespace TREX

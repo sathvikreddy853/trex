@@ -1,5 +1,7 @@
 #include <token.hpp>
 
+namespace TREX {
+
 std::ostream& operator<< (std::ostream& output, Token::Type type) {
     using enum Token::Type;
     switch (type) {
@@ -26,3 +28,5 @@ std::ostream& operator<< (std::ostream& output, Token token) {
 
     return output;
 }
+
+} // namespace TREX

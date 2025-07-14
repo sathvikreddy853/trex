@@ -3,6 +3,7 @@
 
 #include <macros.hpp>
 
+namespace TREX {
 
 struct Token {
     enum struct Type { CHAR, DOT, UNION, CONCAT, STAR, OPT, PLUS, RPAREN, LPAREN, END, NONE };
@@ -10,14 +11,16 @@ struct Token {
     Type type;
     std::optional<char> value;
 
-    Token (Type type = Type::NONE) : type (type), value(std::nullopt) {
+    Token (Type type = Type::NONE) : type (type), value (std::nullopt) {
     }
-    
+
     Token (Type type, char value) : type (type), value (value) {
     }
 };
 
 std::ostream& operator<< (std::ostream& output, Token::Type type);
 std::ostream& operator<< (std::ostream& output, Token token);
+
+} // namespace TREX
 
 #endif // TREX_TOKEN

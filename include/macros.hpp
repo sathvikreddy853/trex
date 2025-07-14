@@ -1,31 +1,29 @@
 #ifndef TREX_MACROS
 #define TREX_MACROS
 
-/* io libraries */
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <print>
-
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
+#include <deque>
+#include <fstream>
 #include <functional>
+#include <iomanip>
+#include <iostream>
+#include <map>
 #include <memory>
 #include <numeric>
 #include <optional>
-#include <utility>
-#include <variant>
-
-/* containers */
-#include <deque>
-#include <map>
+#include <print>
 #include <queue>
 #include <set>
 #include <stack>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
+#include <variant>
 #include <vector>
+
+namespace TREX {
 
 /* colors */
 #define RESET "\033[0m"
@@ -36,16 +34,8 @@
 #define MAGENTA "\033[35m"
 #define CYAN "\033[36m"
 
-typedef uint8_t u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
-typedef uint64_t u64;
-
-typedef int8_t i8;
-typedef int16_t i16;
-typedef int32_t i32;
-typedef int64_t i64;
-
 #define LOG(x) std::cout << x << std::endl;
+
+} // namespace TREX
 
 #endif // TREX_MACROS
