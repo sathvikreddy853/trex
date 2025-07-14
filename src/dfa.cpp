@@ -9,14 +9,23 @@ DFA DFA::construct (const NFA& alice) {
     std::queue<std::set<u32>> queue;
     queue.push (start_state);
 
+    std::set<char> alphabet;
+    for (const auto& [from, trans_list] : alice.transitions) {
+        for (const auto& [to, type, value] : trans_list) {
+            if (type == NFA::Transition::Type::CHAR && value.has_value ()) {
+                alphabet.insert (value.value ());
+            }
+        }
+    }
+
     while (not queue.empty ()) {
         std::set<u32> current = queue.front ();
         queue.pop ();
         u32 curr_id = state_hash[current];
 
-        for (char c = 32; c < 127; c++) {
-            std::set<u32> next = alice.epsilon_closure (alice.move (current, c));
-
+        for (char c : alphabet) {
+            std::set<u32> next =
+            alice.epsilon_closure (alice.move (current, c));
             if (next.empty ())
                 continue;
 
@@ -26,7 +35,18 @@ DFA DFA::construct (const NFA& alice) {
             }
 
             u32 target = state_hash[next];
-            david.transitions.emplace(std::pair{curr_id, c}, target);
+            david.char_transitions.emplace (std::pair{ curr_id, c }, target);
+        }
+
+        std::set<u32> next = alice.epsilon_closure (alice.move (current));
+        if (not next.empty ()) {
+            if (not state_hash.contains (next)) {
+                state_hash[next] = get_id ();
+                queue.push (next);
+            }
+
+            u32 target                     = state_hash[next];
+            david.dot_transitions[curr_id] = target;
         }
     }
 
@@ -43,10 +63,12 @@ bool DFA::match (const std::string& input) const {
     u32 current = start;
 
     for (char c : input) {
-        if (not transitions.contains({current, c})) {
-            return false;
+        if (char_transitions.contains ({ current, c })) {
+            current = char_transitions.at ({ current, c });
+        } else if (dot_transitions.contains (current)) {
+            current = dot_transitions.at (current);
         } else {
-            current = transitions.at({current, c});
+            return false;
         }
     }
 

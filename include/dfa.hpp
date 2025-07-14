@@ -19,7 +19,10 @@ struct DFA {
 
     u32 start;
     std::unordered_set<u32> accept_states;
-    std::unordered_map<std::pair<u32, char>, u32, PairHash> transitions;
+
+    std::unordered_map<std::pair<u32, char>, u32, PairHash> char_transitions;
+    std::unordered_map<u32, u32> dot_transitions;
+
 
     DFA () = default;
 

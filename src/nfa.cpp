@@ -111,10 +111,10 @@ std::set<u32> NFA::epsilon_closure (std::set<u32> states) const {
         u32 state = stack.top ();
         stack.pop ();
 
-        if (not transitions.contains(state))
+        if (not transitions.contains (state))
             continue;
 
-        for (auto& [to, type, value] : transitions.at(state)) {
+        for (auto& [to, type, value] : transitions.at (state)) {
             if (type == Transition::Type::EPSILON and closure.insert (to).second)
                 stack.push (to);
         }
@@ -123,18 +123,18 @@ std::set<u32> NFA::epsilon_closure (std::set<u32> states) const {
     return closure;
 }
 
-std::set<u32> NFA::move (std::set<u32> states, char symbol) const {
+std::set<u32> NFA::move (std::set<u32> states, std::optional<char> symbol) const {
     std::set<u32> result;
 
     for (u32 state : states) {
-        if (not transitions.contains(state))
+        if (not transitions.contains (state))
             continue;
 
-        for (auto& [to, type, value] : transitions.at(state)) {
-            if (type == Transition::Type::CHAR and value.value() == symbol) {
-                result.insert(to);
+        for (auto& [to, type, value] : transitions.at (state)) {
+            if (type == Transition::Type::CHAR and symbol.has_value () and value == symbol.value()) {
+                result.insert (to);
             } else if (type == Transition::Type::DOT) {
-                result.insert(to);
+                result.insert (to);
             }
         }
     }

@@ -5,8 +5,8 @@
 #include <dfa.hpp>
 
 int main () {
-    std::string text = "abcbad";
-    auto tokens = Lexer::tokenize ("a+(b|c)*a+.*");
+    std::string text = "abbcda";
+    auto tokens = Lexer::tokenize ("a.*a");
 
     std::println("Abstract Syntax Tree:");
     std::shared_ptr<ASTNode> node = Parser::parse(tokens);
