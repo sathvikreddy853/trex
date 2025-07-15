@@ -4,27 +4,22 @@
 !*/
 Makefile
 
-# ignores vscode workspace config folders
+# ignores workspace config folders
 .vscode/
 *.code-workspace
-
-# ignores jetbrains workspace config folders
 .idea/
 
 # cache and temporary files
 .DS_Store
 __pycache__/
 tmp/
-
-# ignore binaries
+temp/
+docs/
 build/
 *.a
 *.o
 *.out
 *.zip
 
-# ignore formatting files
+# ignore formatter files
 .clang-format
-
-# ignore files generated from compiling LATEX code
-docs/*
