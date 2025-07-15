@@ -14,29 +14,28 @@
  * <BASE> -> CHAR | LPAREN <EXPRESSION> RPAREN
  */
 
-namespace TREX {
+namespace trex {
 
 class Parser {
     public:
-    explicit Parser (const std::vector<Token>& tokens) : tokens (tokens), pos (0) {
-    }
+    explicit Parser (const std::vector<Token>& tokens) : tokens (tokens), pos (0) {}
 
     Token peek () const;
     void advance ();
     bool match (Token::Type type);
 
-    std::shared_ptr<ASTNode> parse_expression ();
-    std::shared_ptr<ASTNode> parse_term ();
-    std::shared_ptr<ASTNode> parse_factor ();
-    std::shared_ptr<ASTNode> parse_base ();
+    std::shared_ptr<ast::Node> parse_expression ();
+    std::shared_ptr<ast::Node> parse_term ();
+    std::shared_ptr<ast::Node> parse_factor ();
+    std::shared_ptr<ast::Node> parse_base ();
 
-    static std::shared_ptr<ASTNode> parse (const std::vector<Token>& tokens);
+    static std::shared_ptr<ast::Node> parse (const std::vector<Token>& tokens);
 
     private:
     const std::vector<Token>& tokens;
     uint32_t pos;
 };
 
-} // namespace TREX
+} // namespace trex
 
 #endif // TREX_PARSER

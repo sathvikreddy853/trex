@@ -1,6 +1,6 @@
 #include <nfa.hpp>
 
-namespace TREX {
+namespace trex {
 
 std::ostream& operator<< (std::ostream& output, NFA::Transition::Type type) {
     using enum NFA::Transition::Type;
@@ -14,8 +14,8 @@ std::ostream& operator<< (std::ostream& output, NFA::Transition::Type type) {
 }
 
 
-NFA NFA::build (const std::shared_ptr<ASTNode>& node) {
-    using enum ASTNode::Type;
+NFA NFA::build (const std::shared_ptr<ast::Node>& node) {
+    using enum ast::Node::Type;
     switch (node->type) {
     case CHAR: return NFA (get_id (), get_id (), Transition::Type::CHAR, node->value.value ());
     case DOT: return NFA (get_id (), get_id (), Transition::Type::DOT);
@@ -24,7 +24,7 @@ NFA NFA::build (const std::shared_ptr<ASTNode>& node) {
     case STAR: return build_star (build (node->left));
     case PLUS: return build_plus (build (node->left));
     case OPT: return build_opt (build (node->left));
-    default: std::println ("error: invalid node type in nfa"); break;
+    default: throw std::runtime_error("error: invalid node type in nfa") ; break;
     }
 }
 
@@ -113,12 +113,10 @@ std::set<uint32_t> NFA::epsilon_closure (std::set<uint32_t> states) const {
         uint32_t state = stack.top ();
         stack.pop ();
 
-        if (not transitions.contains (state))
-            continue;
+        if (not transitions.contains (state)) continue;
 
         for (auto& [to, type, value] : transitions.at (state)) {
-            if (type == Transition::Type::EPSILON and closure.insert (to).second)
-                stack.push (to);
+            if (type == Transition::Type::EPSILON and closure.insert (to).second) stack.push (to);
         }
     }
 
@@ -129,8 +127,7 @@ std::set<uint32_t> NFA::move (std::set<uint32_t> states, std::optional<char> sym
     std::set<uint32_t> result;
 
     for (uint32_t state : states) {
-        if (not transitions.contains (state))
-            continue;
+        if (not transitions.contains (state)) continue;
 
         for (auto& [to, type, value] : transitions.at (state)) {
             if (type == Transition::Type::CHAR and symbol.has_value () and value == symbol.value ()) {
@@ -144,4 +141,4 @@ std::set<uint32_t> NFA::move (std::set<uint32_t> states, std::optional<char> sym
     return result;
 }
 
-} // namespace TREX
+} // namespace trex

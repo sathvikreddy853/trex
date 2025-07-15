@@ -23,9 +23,8 @@
 #include <variant>
 #include <vector>
 
-namespace TREX {
+namespace trex {
 
-/* colors */
 #define RESET "\033[0m"
 #define RED "\033[31m"
 #define GREEN "\033[32m"
@@ -34,8 +33,6 @@ namespace TREX {
 #define MAGENTA "\033[35m"
 #define CYAN "\033[36m"
 
-#define LOG(x) std::cout << x << std::endl;
-
-} // namespace TREX
+} // namespace trex
 
 #endif // TREX_MACROS

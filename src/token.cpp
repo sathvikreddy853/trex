@@ -1,6 +1,6 @@
 #include <token.hpp>
 
-namespace TREX {
+namespace trex {
 
 std::ostream& operator<< (std::ostream& output, Token::Type type) {
     using enum Token::Type;
@@ -23,10 +23,8 @@ std::ostream& operator<< (std::ostream& output, Token::Type type) {
 
 std::ostream& operator<< (std::ostream& output, Token token) {
     output << CYAN << token.type << RESET;
-    if (token.value.has_value ())
-        output << '(' << GREEN << token.value.value () << RESET << ')';
-
+    if (token.value.has_value ()) output << '(' << GREEN << token.value.value () << RESET << ')';
     return output;
 }
 
-} // namespace TREX
+} // namespace trex

@@ -6,14 +6,14 @@
 
 int main () {
     auto text   = "abbcda";
-    auto tokens = TREX::Lexer::tokenize ("a.*a");
+    auto tokens = trex::Lexer::tokenize ("a.*a");
 
     std::println ("Abstract Syntax Tree:");
-    std::shared_ptr<ASTNode> node = TREX::Parser::parse (tokens);
+    std::shared_ptr<trex::ast::Node> node = trex::Parser::parse (tokens);
     std::cout << node << std::endl;
 
-    TREX::NFA nfa = TREX::NFA::build (node);
-    TREX::DFA dfa = TREX::DFA::construct (nfa);
+    trex::NFA nfa = trex::NFA::build (node);
+    trex::DFA dfa = trex::DFA::construct (nfa);
     std::println ("Match: {}", dfa.match (text));
 
     return 0;

@@ -1,9 +1,9 @@
 #include <ast.hpp>
 
-namespace TREX {
+namespace trex {
 
-std::ostream& operator<< (std::ostream& output, ASTNode::Type type) {
-    using enum ASTNode::Type;
+std::ostream& ast::operator<< (std::ostream& output, ast::Node::Type type) {
+    using enum ast::Node::Type;
     switch (type) {
     case CHAR: output << "CHAR"; break;
     case DOT: output << "DOT"; break;
@@ -18,20 +18,17 @@ std::ostream& operator<< (std::ostream& output, ASTNode::Type type) {
     return output;
 }
 
-std::ostream& operator<< (std::ostream& output, const std::shared_ptr<ASTNode>& node) {
-    using enum ASTNode::Type;
-    std::function<void (std::shared_ptr<ASTNode>, std::string, bool, bool)> print_tree;
-    print_tree = [&] (std::shared_ptr<ASTNode> root, std::string prefix, bool is_left, bool is_root) {
-        if (!root)
-            return;
+std::ostream& ast::operator<< (std::ostream& output, const std::shared_ptr<ast::Node>& node) {
+    using enum ast::Node::Type;
+    std::function<void (std::shared_ptr<ast::Node>, std::string, bool, bool)> print_tree;
+    print_tree = [&] (std::shared_ptr<ast::Node> root, std::string prefix, bool is_left, bool is_root) {
+        if (not root) return;
 
         output << prefix;
-        if (not is_root)
-            output << (is_left ? "├── " : "└── ");
+        if (not is_root) output << (is_left ? "├── " : "└── ");
 
         output << root->type;
-        if (root->value.has_value ())
-            output << '(' << root->value.value () << ')';
+        if (root->value.has_value ()) output << '(' << root->value.value () << ')';
         output << std::endl;
 
         bool has_left  = static_cast<bool> (root->left);
@@ -50,5 +47,5 @@ std::ostream& operator<< (std::ostream& output, const std::shared_ptr<ASTNode>& 
     print_tree (node, "", false, true);
     return output;
 }
-    
-} // namespace TREX
+
+} // namespace trex

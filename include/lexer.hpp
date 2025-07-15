@@ -4,12 +4,11 @@
 #include <macros.hpp>
 #include <token.hpp>
 
-namespace TREX {
+namespace trex {
 
 class Lexer {
     public:
-    explicit Lexer (const std::string& pattern) : pattern (pattern), pos (0) {
-    }
+    explicit Lexer (const std::string& pattern) : pattern (pattern), pos (0) {}
 
     Token next ();
     bool has_next () const;
@@ -21,6 +20,6 @@ class Lexer {
     uint32_t pos;
 };
 
-} // namespace TREX
+} // namespace trex
 
 #endif // TREX_LEXER

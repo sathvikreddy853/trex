@@ -4,7 +4,7 @@
 #include <macros.hpp>
 #include <nfa.hpp>
 
-namespace TREX {
+namespace trex {
 
 struct DFA {
     static inline uint32_t get_id () {
@@ -28,13 +28,12 @@ struct DFA {
 
     DFA () = default;
 
-    DFA (uint32_t start) : start (start) {
-    }
+    DFA (uint32_t start) : start (start) {}
 
     static DFA construct (const NFA& alice);
     bool match (const std::string& input) const;
 };
 
-} // namespace TREX
+} // namespace trex
 
 #endif // TREX_DFA

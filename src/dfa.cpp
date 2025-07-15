@@ -1,6 +1,6 @@
 #include <dfa.hpp>
 
-namespace TREX {
+namespace trex {
 
 DFA DFA::construct (const NFA& alice) {
     std::map<std::set<uint32_t>, uint32_t> state_hash;
@@ -27,8 +27,7 @@ DFA DFA::construct (const NFA& alice) {
 
         for (char c : alphabet) {
             std::set<uint32_t> next = alice.epsilon_closure (alice.move (current, c));
-            if (next.empty ())
-                continue;
+            if (next.empty ()) continue;
 
             if (not state_hash.count (next)) {
                 state_hash[next] = get_id ();
@@ -76,4 +75,4 @@ bool DFA::match (const std::string& input) const {
     return accept_states.contains (current);
 }
 
-} // namespace TREX
+} // namespace trex

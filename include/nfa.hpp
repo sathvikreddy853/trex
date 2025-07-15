@@ -4,7 +4,7 @@
 #include <ast.hpp>
 #include <macros.hpp>
 
-namespace TREX {
+namespace trex {
 
 struct NFA {
     struct Transition {
@@ -15,8 +15,7 @@ struct NFA {
         std::optional<char> value;
 
         Transition (uint32_t to, Type type, std::optional<char> value = std::nullopt)
-        : to (to), type (type), value (value) {
-        }
+        : to (to), type (type), value (value) {}
     };
 
     uint32_t start;
@@ -29,15 +28,14 @@ struct NFA {
         return id++;
     }
 
-    NFA (uint32_t start, uint32_t accept) : start (start), accept (accept) {
-    }
+    NFA (uint32_t start, uint32_t accept) : start (start), accept (accept) {}
 
     NFA (uint32_t start, uint32_t accept, Transition::Type type, std::optional<char> value = std::nullopt)
     : start (start), accept (accept) {
         transitions[start].emplace_back (accept, type, value);
     }
 
-    static NFA build (const std::shared_ptr<ASTNode>& node);
+    static NFA build (const std::shared_ptr<ast::Node>& node);
 
     static NFA build_union (const NFA&, const NFA&);
     static NFA build_concat (const NFA&, const NFA&);
@@ -51,6 +49,6 @@ struct NFA {
 
 std::ostream& operator<< (std::ostream& output, NFA::Transition::Type type);
 
-} // namespace TREX
+} // namespace trex
 
 #endif // TREX_NFA
